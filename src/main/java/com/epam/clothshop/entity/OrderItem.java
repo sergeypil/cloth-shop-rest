@@ -1,14 +1,14 @@
 package com.epam.clothshop.entity;
 
-import javax.persistence.*;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Product {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -17,9 +17,6 @@ public class Product {
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @JoinColumn(name = "vendor_id")
-    private Vendor vendor;
+    @JoinColumn(name = "order_id")
+    private Order order;
 }

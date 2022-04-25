@@ -1,16 +1,10 @@
 package com.epam.clothshop.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.epam.clothshop.dto.ProductRequest;
-import com.epam.clothshop.dto.ProductResponce;
-import com.epam.clothshop.entity.Category;
 import com.epam.clothshop.entity.Product;
 import com.epam.clothshop.exception.ResourceNotFoundException;
 import com.epam.clothshop.repository.CategoryRepository;

@@ -3,8 +3,10 @@ package com.epam.clothshop.controller;
 import com.epam.clothshop.dto.*;
 import com.epam.clothshop.entity.Order;
 import com.epam.clothshop.entity.User;
+import com.epam.clothshop.mapper.OrderMapper;
+import com.epam.clothshop.mapper.UserMapper;
+import com.epam.clothshop.service.ProductService;
 import com.epam.clothshop.service.UserService;
-import com.epam.clothshop.util.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,22 +19,28 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
     private UserService userService;
+    private ProductService productService;
+    private UserMapper userMapper;
+    private OrderMapper orderMapper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ProductService productService, UserMapper userMapper, OrderMapper orderMapper) {
         this.userService = userService;
+        this.productService = productService;
+        this.userMapper = userMapper;
+        this.orderMapper = orderMapper;
     }
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         List<UserResponse> userResponses = userService.getAllUsers().stream()
-                .map(u -> MapperUtils.mapUserToUserResponce(u)).collect(Collectors.toList());
+                .map(u -> userMapper.mapUserToUserResponce(u)).collect(Collectors.toList());
         return new ResponseEntity<>(userResponses, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody UserRequest userRequest) {
-        userService.saveUser(MapperUtils.mapUserRequestToUser(userRequest));
+        userService.saveUser(userMapper.mapUserRequestToUser(userRequest));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -51,12 +59,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable long id) {
         User user = userService.getUserById(id);
-        return new ResponseEntity<>(MapperUtils.mapUserToUserResponce(user), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.mapUserToUserResponce(user), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody UserRequest userRequest) {
-        User user = MapperUtils.mapUserRequestToUser(userRequest);
+        User user = userMapper.mapUserRequestToUser(userRequest);
         userService.update(user, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -72,14 +80,14 @@ public class UserController {
     public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable long id) {
         User user = userService.getUserById(id);
         List<OrderResponse> orderResponses = user.getOrders().stream()
-                .map(o -> MapperUtils.mapOrderToOrderResponse(o)).collect(Collectors.toList());
+                .map(o -> orderMapper.mapOrderToOrderResponse(o)).collect(Collectors.toList());
         return new ResponseEntity<>(orderResponses, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/orders")
     public ResponseEntity<Void> createOrderForCustomer(@PathVariable long id, @RequestBody OrderRequest orderRequest) {
         User user = userService.getUserById(id);
-        Order order = MapperUtils.mapOrderRequestToOrder(orderRequest, user);
+        Order order = orderMapper.mapOrderRequestToOrder(orderRequest, user);
         userService.saveOrder(order);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

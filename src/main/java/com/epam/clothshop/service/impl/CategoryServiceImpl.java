@@ -14,8 +14,8 @@ import com.epam.clothshop.service.CategoryService;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-	ProductRepository productRepository;
-	CategoryRepository categoryRepository;
+	private ProductRepository productRepository;
+	private CategoryRepository categoryRepository;
 	
 	@Autowired
 	public CategoryServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {

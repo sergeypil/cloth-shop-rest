@@ -3,6 +3,8 @@ package com.epam.clothshop.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.epam.clothshop.mapper.CategoryMapper;
+import com.epam.clothshop.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,42 +20,45 @@ import com.epam.clothshop.dto.CategoryRequest;
 import com.epam.clothshop.dto.CategoryResponse;
 import com.epam.clothshop.dto.ProductResponse;
 import com.epam.clothshop.service.CategoryService;
-import com.epam.clothshop.util.MapperUtils;
 
 @RestController
 @RequestMapping("/categories")
 @Component
 public class CategoryController {
-	CategoryService categoryService;
-	
+	private CategoryService categoryService;
+	private CategoryMapper categoryMapper;
+	private ProductMapper productMapper;
+
 	@Autowired
-	public CategoryController(CategoryService categoryService) {
+	public CategoryController(CategoryService categoryService, CategoryMapper categoryMapper, ProductMapper productMapper) {
 		this.categoryService = categoryService;
+		this.categoryMapper = categoryMapper;
+		this.productMapper = productMapper;
 	}
 
 	@GetMapping
-	public ResponseEntity<List<CategoryResponse>> getProducts() {
+	public ResponseEntity<List<CategoryResponse>> getAllCategories() {
 		List<CategoryResponse> categoryResponses = categoryService.getAllCategories().stream()
-		.map(p -> MapperUtils.mapCategoryToCategoryResponse(p)).collect(Collectors.toList());
+		.map(p -> categoryMapper.mapCategoryToCategoryResponse(p)).collect(Collectors.toList());
 		return new ResponseEntity<>(categoryResponses, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoryResponse> getProductById(@PathVariable long id) {
-		CategoryResponse categoryResponse = MapperUtils.mapCategoryToCategoryResponse(categoryService.getCategoryById(id));
+	public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable long id) {
+		CategoryResponse categoryResponse = categoryMapper.mapCategoryToCategoryResponse(categoryService.getCategoryById(id));
 		return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createProduct(@RequestBody CategoryRequest categoryRequest) {
-		categoryService.saveCategory(MapperUtils.mapCategoryRequestToCategory(categoryRequest));
+	public ResponseEntity<Void> createCategory(@RequestBody CategoryRequest categoryRequest) {
+		categoryService.saveCategory(categoryMapper.mapCategoryRequestToCategory(categoryRequest));
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{id}/products")
 	public ResponseEntity<List<ProductResponse>> getProductByCategoryId(@PathVariable long id) {
 		List<ProductResponse> productResponses = categoryService.getProductsByCategoryId(id).stream()
-		.map(p -> MapperUtils.mapProductToProductResponse(p)).collect(Collectors.toList());
+		.map(p -> productMapper.mapProductToProductResponse(p)).collect(Collectors.toList());
 		return new ResponseEntity<>(productResponses, HttpStatus.OK);
 	}
 }

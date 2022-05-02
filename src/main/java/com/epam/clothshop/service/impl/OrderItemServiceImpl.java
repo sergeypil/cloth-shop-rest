@@ -5,9 +5,11 @@ import com.epam.clothshop.exception.ResourceNotFoundException;
 import com.epam.clothshop.repository.OrderItemRepository;
 import com.epam.clothshop.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderItemServiceImpl implements OrderItemService {
-    OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
     public OrderItemServiceImpl(OrderItemRepository orderItemRepository) {

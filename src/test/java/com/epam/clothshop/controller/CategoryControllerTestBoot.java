@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,15 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-//@WebMvcTest(CategoryController.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-class CategoryControllerTest {
+@WebMvcTest(CategoryController.class)
+class CategoryControllerTestBoot {
 
     @MockBean
     CategoryService categoryService;
 
-    @Autowired
+    @MockBean
     private CategoryMapper categoryMapper;
 
     @MockBean
@@ -54,7 +51,7 @@ class CategoryControllerTest {
 
         Mockito.when(categoryService.getAllCategories()).thenReturn(categories);
 
-        this.mockMvc.perform(get("/categories"))
+        mockMvc.perform(get("/categories"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$[0].name", Matchers.is("books")));

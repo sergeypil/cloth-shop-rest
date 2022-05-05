@@ -44,18 +44,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Void> loginUser() {
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logoutUser() {
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable long id) {
         User user = userService.getUserById(id);

@@ -65,6 +65,9 @@
             <column name="vendor_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="photo" type="blob">
+            </column>
         </createTable>
     </changeSet>
 
@@ -204,11 +207,19 @@
     <changeSet id="1.0.12" author="sergey">
         <insert tableName="user">
             <column name="username" value="serg"/>
-            <column name="password" value="123"/>
+            <column name="password" value="$2a$12$kHOEm0Bl4ZrkQE7P4w0V.OMb0bcoD/I.1UdoYCpUwwumS1Ne/3x1O"/>
             <column name="first_name" value="Name"/>
             <column name="last_name" value="LastName"/>
             <column name="email" value="email@dafa.fd"/>
             <column name="phone" value="525252"/>
+        </insert>
+        <insert tableName="user">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$12$kHOEm0Bl4ZrkQE7P4w0V.OMb0bcoD/I.1UdoYCpUwwumS1Ne/3x1O"/>
+            <column name="first_name" value="Name"/>
+            <column name="last_name" value="LastName"/>
+            <column name="email" value="email@dafad.fd"/>
+            <column name="phone" value="5252352"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

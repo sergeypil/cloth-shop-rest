@@ -15,6 +15,7 @@ public class Product {
     private String name;
     private int price;
     private int quantity;
+    private byte[] photoBytes;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

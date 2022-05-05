@@ -56,7 +56,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/{id}/products")
-	public ResponseEntity<List<ProductResponse>> getProductByCategoryId(@PathVariable long id) {
+	public ResponseEntity<List<ProductResponse>> getProductsByCategoryId(@PathVariable long id) {
 		List<ProductResponse> productResponses = categoryService.getProductsByCategoryId(id).stream()
 		.map(p -> productMapper.mapProductToProductResponse(p)).collect(Collectors.toList());
 		return new ResponseEntity<>(productResponses, HttpStatus.OK);

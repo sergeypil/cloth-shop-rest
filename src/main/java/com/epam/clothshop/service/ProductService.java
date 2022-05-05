@@ -10,4 +10,5 @@ public interface ProductService {
 	void saveProduct(Product product);
 	void updateProduct(Product product, long id);
 	void deleteProduct(Product product);
+    void updatePhotoOfProduct(Product product, long id, byte[] photoBytes);
 }

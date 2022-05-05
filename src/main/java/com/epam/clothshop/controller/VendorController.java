@@ -68,9 +68,4 @@ public class VendorController {
                 .map(p -> productMapper.mapProductToProductResponse(p)).collect(Collectors.toList());
         return new ResponseEntity<>(productResponses, HttpStatus.OK);
     }
-
-    @PostMapping("/{id}/products")
-    public ResponseEntity<Void> addProductToVendor(@RequestBody ProductRequest productRequest) {
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
 }

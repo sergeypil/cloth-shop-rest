@@ -7,14 +7,7 @@ import com.epam.clothshop.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.epam.clothshop.dto.ProductRequest;
 import com.epam.clothshop.dto.ProductResponse;
@@ -71,4 +64,19 @@ public class ProductController {
 		productService.deleteProduct(product);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
+	@GetMapping("/{id}/photo")
+	public ResponseEntity<byte[]> getPhotoOfProduct(@PathVariable long id) {
+		Product product = productService.getProductById(id);
+		byte[] photoBytes = product.getPhotoBytes();
+		return new ResponseEntity<>(photoBytes, HttpStatus.OK);
+	}
+
+	@PatchMapping("/{id}/photo")
+	public ResponseEntity<Void> updatePhotoOfProduct(@PathVariable long id, @RequestBody byte[] photoBytes) {
+		Product product = productService.getProductById(id);
+		productService.updatePhotoOfProduct(product, id, photoBytes);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 }

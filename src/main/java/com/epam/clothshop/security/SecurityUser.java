@@ -2,8 +2,6 @@ package com.epam.clothshop.security;
 
 import com.epam.clothshop.entity.User;
 import lombok.Data;
-import net.proselyte.springsecuritydemo.model.Status;
-import net.proselyte.springsecuritydemo.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +15,11 @@ public class SecurityUser implements UserDetails {
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
-    private final boolean isActive;
 
-    public SecurityUser(String username, String password, List<SimpleGrantedAuthority> authorities, boolean isActive) {
+    public SecurityUser(String username, String password, List<SimpleGrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
-        this.isActive = isActive;
     }
 
     @Override
@@ -59,7 +55,5 @@ public class SecurityUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
     }
 }

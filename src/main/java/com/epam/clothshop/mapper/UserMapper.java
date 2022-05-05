@@ -4,6 +4,7 @@ import com.epam.clothshop.dto.OrderResponse;
 import com.epam.clothshop.dto.UserRequest;
 import com.epam.clothshop.dto.UserResponse;
 import com.epam.clothshop.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,6 +13,12 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
     OrderMapper orderMapper;
+
+    @Autowired
+    public UserMapper(OrderMapper orderMapper) {
+        this.orderMapper = orderMapper;
+    }
+
     public UserResponse mapUserToUserResponce(User user) {
         var userResponse = new UserResponse();
         userResponse.setId(user.getId());

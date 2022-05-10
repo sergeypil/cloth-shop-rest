@@ -3,12 +3,9 @@ package com.epam.clothshop.controller;
 import com.epam.clothshop.entity.Category;
 import com.epam.clothshop.entity.Product;
 import com.epam.clothshop.entity.Vendor;
-import com.epam.clothshop.mapper.CategoryMapper;
 import com.epam.clothshop.mapper.ProductMapper;
 import com.epam.clothshop.mapper.VendorMapper;
-import com.epam.clothshop.service.CategoryService;
 import com.epam.clothshop.service.VendorService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.hamcrest.Matchers;
@@ -25,13 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser
 class VendorControllerTest {

@@ -1,6 +1,5 @@
 package com.epam.clothshop.service.impl;
 
-import com.epam.clothshop.dto.UserResponse;
 import com.epam.clothshop.entity.Order;
 import com.epam.clothshop.entity.User;
 import com.epam.clothshop.exception.ResourceNotFoundException;

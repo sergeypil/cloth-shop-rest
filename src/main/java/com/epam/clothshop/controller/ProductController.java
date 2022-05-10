@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.epam.clothshop.mapper.ProductMapper;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,16 +67,17 @@ public class ProductController {
 	}
 
 	@GetMapping("/{id}/photo")
-	public ResponseEntity<byte[]> getPhotoOfProduct(@PathVariable long id) {
+	public ResponseEntity<String> getPhotoOfProduct(@PathVariable long id) {
 		Product product = productService.getProductById(id);
 		byte[] photoBytes = product.getPhotoBytes();
-		return new ResponseEntity<>(photoBytes, HttpStatus.OK);
+		String photoBase64 = Base64.encodeBase64String(photoBytes);
+		return new ResponseEntity<>(photoBase64, HttpStatus.OK);
 	}
 
 	@PatchMapping("/{id}/photo")
-	public ResponseEntity<Void> updatePhotoOfProduct(@PathVariable long id, @RequestBody byte[] photoBytes) {
+	public ResponseEntity<Void> updatePhotoOfProduct(@PathVariable long id, @RequestBody String photoBase64) {
 		Product product = productService.getProductById(id);
-		productService.updatePhotoOfProduct(product, id, photoBytes);
+		productService.updatePhotoOfProduct(product, id, Base64.decodeBase64(photoBase64));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

@@ -1,13 +1,9 @@
 package com.epam.clothshop.controller;
 
 import com.epam.clothshop.dto.LoginRequest;
-import com.epam.clothshop.entity.Category;
 import com.epam.clothshop.entity.User;
-import com.epam.clothshop.mapper.CategoryMapper;
 import com.epam.clothshop.mapper.UserMapper;
 import com.epam.clothshop.service.AuthService;
-import com.epam.clothshop.service.CategoryService;
-import com.epam.clothshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
@@ -21,12 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser
 class AuthControllerTest {
@@ -64,6 +59,9 @@ class AuthControllerTest {
     }
 
     @Test
-    void logout() {
+    void logout() throws Exception {
+        this.mockMvc.perform(post("/auth/logout"))
+                .andExpect(status().isOk());
+        verify(authService, times(1)).logout();
     }
 }

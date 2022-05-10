@@ -83,16 +83,16 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{oid}/items/{iid}")
-    public ResponseEntity<OrderItemResponse> getItemOfOrder(@PathVariable long id) {
+    @GetMapping("/{oid}/items/{oiid}")
+    public ResponseEntity<OrderItemResponse> getItemOfOrder(@PathVariable long oiid) {
         OrderItemResponse orderItemResponse =
-                orderItemMapper.mapOrderItemToOrderItemResponse(orderItemService.getOrderItemById(id));
+                orderItemMapper.mapOrderItemToOrderItemResponse(orderItemService.getOrderItemById(oiid));
         return new ResponseEntity<>(orderItemResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{oid}/items/{iid}")
-    public ResponseEntity<Void> deleteItemOfOrder(@PathVariable long id) {
-        OrderItem orderItem = orderItemService.getOrderItemById(id);
+    @DeleteMapping("/{oid}/items/{oiid}")
+    public ResponseEntity<Void> deleteItemOfOrder(@PathVariable long oiid) {
+        OrderItem orderItem = orderItemService.getOrderItemById(oiid);
         orderItemService.deleteOrderItem(orderItem);
         return new ResponseEntity<>(HttpStatus.OK);
     }

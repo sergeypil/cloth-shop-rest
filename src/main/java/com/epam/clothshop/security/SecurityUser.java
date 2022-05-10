@@ -1,6 +1,5 @@
 package com.epam.clothshop.security;
 
-import com.epam.clothshop.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

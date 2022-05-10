@@ -3,15 +3,11 @@ package com.epam.clothshop.controller;
 import com.epam.clothshop.dto.OrderRequest;
 import com.epam.clothshop.entity.Order;
 import com.epam.clothshop.entity.User;
-import com.epam.clothshop.entity.Vendor;
 import com.epam.clothshop.mapper.OrderMapper;
-import com.epam.clothshop.mapper.ProductMapper;
 import com.epam.clothshop.mapper.UserMapper;
-import com.epam.clothshop.mapper.VendorMapper;
 import com.epam.clothshop.model.OrderStatus;
 import com.epam.clothshop.service.ProductService;
 import com.epam.clothshop.service.UserService;
-import com.epam.clothshop.service.VendorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.hamcrest.Matchers;
@@ -25,17 +21,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser
 class UserControllerTest {

@@ -10,7 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class ClothShopApplicationTests {
+public class ClothShopApplicationTests {
 
 	@Autowired
 	CategoryController categoryController;

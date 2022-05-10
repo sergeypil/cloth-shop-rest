@@ -1,6 +1,5 @@
 package com.epam.clothshop.mapper;
 
-import com.epam.clothshop.dto.ProductRequest;
 import com.epam.clothshop.dto.ProductResponse;
 import com.epam.clothshop.dto.VendorRequest;
 import com.epam.clothshop.dto.VendorResponse;

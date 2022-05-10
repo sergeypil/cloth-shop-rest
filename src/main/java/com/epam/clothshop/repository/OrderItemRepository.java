@@ -1,6 +1,5 @@
 package com.epam.clothshop.repository;
 
-import com.epam.clothshop.entity.Order;
 import com.epam.clothshop.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 

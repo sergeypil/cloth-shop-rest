@@ -1,19 +1,15 @@
 package com.epam.clothshop.mapper;
 
-import com.epam.clothshop.dto.OrderItemRequest;
 import com.epam.clothshop.dto.OrderItemResponse;
 import com.epam.clothshop.dto.OrderRequest;
 import com.epam.clothshop.dto.OrderResponse;
 import com.epam.clothshop.entity.Order;
-import com.epam.clothshop.entity.OrderItem;
-import com.epam.clothshop.entity.Product;
 import com.epam.clothshop.entity.User;
 import com.epam.clothshop.model.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

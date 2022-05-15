@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
-    OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
 
     @Autowired
     public UserMapper(OrderMapper orderMapper) {

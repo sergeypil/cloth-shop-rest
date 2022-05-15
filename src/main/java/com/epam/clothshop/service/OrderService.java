@@ -14,7 +14,5 @@ public interface OrderService {
 
     void cancelOrder(Order order);
 
-    void purchaseOrder(Order order);
-
     void addOrderItemToOrder(Order order, OrderItem orderItem);
 }

@@ -24,11 +24,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/orders")
 @Component
 public class OrderController {
-    private OrderService orderService;
-    private OrderItemService orderItemService;
-    private ProductService productService;
-    private OrderMapper orderMapper;
-    private OrderItemMapper orderItemMapper;
+    private final OrderService orderService;
+    private final OrderItemService orderItemService;
+    private final ProductService productService;
+    private final OrderMapper orderMapper;
+    private final OrderItemMapper orderItemMapper;
 
     @Autowired
     public OrderController(OrderService orderService, OrderItemService orderItemService,
@@ -58,13 +58,6 @@ public class OrderController {
     public ResponseEntity<Void> cancelOrder(@PathVariable long id) {
         Order order = orderService.getOrderById(id);
         orderService.cancelOrder(order);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/{id}/purchase")
-    public ResponseEntity<Void> purchaseOrder(@PathVariable long id) {
-        Order order = orderService.getOrderById(id);
-        orderService.purchaseOrder(order);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

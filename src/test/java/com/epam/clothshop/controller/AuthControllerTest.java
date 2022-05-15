@@ -37,14 +37,9 @@ class AuthControllerTest {
 
     @Test
     void login() throws Exception {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("test");
-        loginRequest.setPassword("123");
+        LoginRequest loginRequest = createLoginRequest();
 
-        User user = new User();
-        user.setUsername("test");
-        user.setOrders(new ArrayList<>());
-
+        User user = createUser();
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(loginRequest);
@@ -63,5 +58,19 @@ class AuthControllerTest {
         this.mockMvc.perform(post("/auth/logout"))
                 .andExpect(status().isOk());
         verify(authService, times(1)).logout();
+    }
+
+    private User createUser() {
+        var user = new User();
+        user.setUsername("test");
+        user.setOrders(new ArrayList<>());
+        return user;
+    }
+
+    private LoginRequest createLoginRequest() {
+        var loginRequest = new LoginRequest();
+        loginRequest.setUsername("test");
+        loginRequest.setPassword("123");
+        return loginRequest;
     }
 }

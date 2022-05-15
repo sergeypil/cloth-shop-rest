@@ -7,15 +7,21 @@ import com.epam.clothshop.model.OrderStatus;
 import com.epam.clothshop.repository.OrderItemRepository;
 import com.epam.clothshop.repository.OrderRepository;
 import com.epam.clothshop.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private OrderRepository orderRepository;
-    private OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+    }
 
     @Override
     public List<Order> getAllOrders() {
@@ -37,11 +43,6 @@ public class OrderServiceImpl implements OrderService {
     public void cancelOrder(Order order) {
         order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
-
-    }
-
-    @Override
-    public void purchaseOrder(Order order) {
 
     }
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {
-    CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
 
     @Autowired
     public ProductMapper(CategoryMapper categoryMapper) {

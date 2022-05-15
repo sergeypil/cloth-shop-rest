@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class VendorMapper {
-    ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
     public VendorMapper(ProductMapper productMapper) {

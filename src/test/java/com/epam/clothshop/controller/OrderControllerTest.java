@@ -33,6 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 class OrderControllerTest {
+    private static final int PRODUCT_ID = 5;
+    private static final int ORDER_ID = 10;
+    private static final int ORDER_ITEM_ID = 3;
 
     @MockBean
     OrderService orderService;
@@ -54,12 +57,7 @@ class OrderControllerTest {
 
     @Test
     void getAllOrders() throws Exception {
-        Order order = new Order();
-        order.setId(10);
-        order.setStatus(OrderStatus.PLACED);
-        User user = new User();
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
+        Order order = createOrderObject();
         List<Order> orders = List.of(order);
 
         Mockito.when(orderService.getAllOrders()).thenReturn(orders);
@@ -67,118 +65,82 @@ class OrderControllerTest {
         this.mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
-                .andExpect(jsonPath("$[0].id", Matchers.is(10)));
+                .andExpect(jsonPath("$[0].id", Matchers.is(ORDER_ID)));
 
         verify(orderService, times(1)).getAllOrders();
     }
 
     @Test
     void deleteOrderById() throws Exception {
-        Order order = new Order();
-        order.setId(10);
-        order.setStatus(OrderStatus.PLACED);
-        User user = new User();
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
+        Order order = createOrderObject();
 
-        when(orderService.getOrderById(10)).thenReturn(order);
+        when(orderService.getOrderById(ORDER_ID)).thenReturn(order);
 
         this.mockMvc.perform(delete("/orders/10"))
                 .andExpect(status().isOk());
-        verify(orderService, times(1)).getOrderById(10);
+        verify(orderService, times(1)).getOrderById(ORDER_ID);
         verify(orderService, times(1)).deleteOrder(order);
     }
 
     @Test
     void cancelOrder() throws Exception {
-        Order order = new Order();
-        order.setId(10);
-        order.setStatus(OrderStatus.PLACED);
-        User user = new User();
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
+        Order order = createOrderObject();
 
-        when(orderService.getOrderById(10)).thenReturn(order);
+        when(orderService.getOrderById(ORDER_ID)).thenReturn(order);
 
         this.mockMvc.perform(post("/orders/10/cancel"))
                 .andExpect(status().isOk());
 
-        verify(orderService, times(1)).getOrderById(10);
+        verify(orderService, times(1)).getOrderById(ORDER_ID);
         verify(orderService, times(1)).cancelOrder(order);
     }
 
     @Test
-    void purchaseOrder() {
-    }
-
-    @Test
     void getOrderById() throws Exception {
-        Order order = new Order();
-        order.setId(10);
-        order.setStatus(OrderStatus.PLACED);
-        User user = new User();
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
+        Order order = createOrderObject();
 
-        Mockito.when(orderService.getOrderById(10)).thenReturn(order);
+        Mockito.when(orderService.getOrderById(ORDER_ID)).thenReturn(order);
 
         this.mockMvc.perform(get("/orders/10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Matchers.is(10)));
+                .andExpect(jsonPath("$.id", Matchers.is(ORDER_ID)));
 
-        verify(orderService, times(1)).getOrderById(10);
+        verify(orderService, times(1)).getOrderById(ORDER_ID);
     }
 
     @Test
     void addItemToOrder() throws Exception {
-        OrderItemRequest orderItemRequest = new OrderItemRequest();
-        orderItemRequest.setProductId(5);
+        OrderItemRequest orderItemRequest = createOrderItemRequestObject();
+        Order order = createOrderObject();
 
-        Order order = new Order();
-        order.setId(10);
-        order.setStatus(OrderStatus.PLACED);
-        User user = new User();
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
-
-        Product product = new Product();
-        product.setId(5);
+        Product product = createProductObject();
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(orderItemRequest);
 
-        Mockito.when(orderService.getOrderById(10)).thenReturn(order);
-        Mockito.when(productService.getProductById(5)).thenReturn(product);
-
-
+        Mockito.when(orderService.getOrderById(ORDER_ID)).thenReturn(order);
+        Mockito.when(productService.getProductById(PRODUCT_ID)).thenReturn(product);
 
         this.mockMvc.perform(post("/orders/10/items")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(orderService, times(1)).getOrderById(10);
-        verify(productService, times(1)).getProductById(5);
+        verify(orderService, times(1)).getOrderById(ORDER_ID);
+        verify(productService, times(1)).getProductById(PRODUCT_ID);
         verify(orderService, times(1))
                 .addOrderItemToOrder(order, orderItemMapper.mapOrderItemRequestToOrderItem(orderItemRequest, product, order));
     }
 
     @Test
     void getItemOfOrder() throws Exception {
-        Order order = new Order();
-        order.setId(10);
-        order.setStatus(OrderStatus.PLACED);
-        User user = new User();
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
-
-        OrderItem orderItem = new OrderItem();
+        Order order = createOrderObject();
+        Product product = createProductObject();
+        OrderItem orderItem = createOrderItemObject();
         orderItem.setOrder(order);
-        Product product = new Product();
         orderItem.setProduct(product);
-        orderItem.setId(3);
 
-        Mockito.when(orderItemService.getOrderItemById(3)).thenReturn(orderItem);
+        Mockito.when(orderItemService.getOrderItemById(ORDER_ITEM_ID)).thenReturn(orderItem);
 
         this.mockMvc.perform(get("/orders/10/items/3"))
                 .andExpect(status().isOk())
@@ -189,15 +151,41 @@ class OrderControllerTest {
 
     @Test
     void deleteItemOfOrder() throws Exception {
-        OrderItem orderItem = new OrderItem();
+        OrderItem orderItem = createOrderItemObject();
 
-        orderItem.setId(3);
-
-        when(orderItemService.getOrderItemById(3)).thenReturn(orderItem);
+        when(orderItemService.getOrderItemById(ORDER_ITEM_ID)).thenReturn(orderItem);
 
         this.mockMvc.perform(delete("/orders/10/items/3"))
                 .andExpect(status().isOk());
-        verify(orderItemService, times(1)).getOrderItemById(3);
+        verify(orderItemService, times(1)).getOrderItemById(ORDER_ITEM_ID);
         verify(orderItemService, times(1)).deleteOrderItem(orderItem);
+    }
+
+    private Order createOrderObject() {
+        var order = new Order();
+        order.setId(ORDER_ID);
+        order.setStatus(OrderStatus.PLACED);
+        User user = new User();
+        order.setUser(user);
+        order.setOrderItems(new ArrayList<>());
+        return order;
+    }
+
+    private Product createProductObject() {
+        var product = new Product();
+        product.setId(PRODUCT_ID);
+        return product;
+    }
+
+    private OrderItemRequest createOrderItemRequestObject() {
+        var orderItemRequest = new OrderItemRequest();
+        orderItemRequest.setProductId(PRODUCT_ID);
+        return orderItemRequest;
+    }
+
+    private OrderItem createOrderItemObject() {
+        var orderItem = new OrderItem();
+        orderItem.setId(ORDER_ITEM_ID);
+        return orderItem;
     }
 }

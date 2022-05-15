@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserService userService;
-    private ProductService productService;
-    private UserMapper userMapper;
-    private OrderMapper orderMapper;
+    private final UserService userService;
+    private final ProductService productService;
+    private final UserMapper userMapper;
+    private final OrderMapper orderMapper;
 
     @Autowired
     public UserController(UserService userService, ProductService productService, UserMapper userMapper, OrderMapper orderMapper) {

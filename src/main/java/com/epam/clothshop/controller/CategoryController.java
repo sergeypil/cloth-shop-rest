@@ -25,9 +25,9 @@ import com.epam.clothshop.service.CategoryService;
 @RequestMapping("/categories")
 @Component
 public class CategoryController {
-	private CategoryService categoryService;
-	private CategoryMapper categoryMapper;
-	private ProductMapper productMapper;
+	private final CategoryService categoryService;
+	private final CategoryMapper categoryMapper;
+	private final ProductMapper productMapper;
 
 	@Autowired
 	public CategoryController(CategoryService categoryService, CategoryMapper categoryMapper, ProductMapper productMapper) {

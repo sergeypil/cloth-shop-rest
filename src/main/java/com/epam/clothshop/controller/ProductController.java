@@ -20,9 +20,9 @@ import com.epam.clothshop.service.ProductService;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-	private ProductService productService;
-	private CategoryService categoryService;
-	private ProductMapper productMapper;
+	private final ProductService productService;
+	private final CategoryService categoryService;
+	private final ProductMapper productMapper;
 
 	@Autowired
 	public ProductController(ProductService productService, CategoryService categoryService, ProductMapper productMapper) {

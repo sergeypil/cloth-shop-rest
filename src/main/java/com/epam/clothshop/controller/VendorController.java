@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/vendors")
 public class VendorController {
-    private VendorService vendorService;
-    private VendorMapper vendorMapper;
-    private ProductMapper productMapper;
+    private final VendorService vendorService;
+    private final VendorMapper vendorMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
     public VendorController(VendorService vendorService, VendorMapper vendorMapper, ProductMapper productMapper) {

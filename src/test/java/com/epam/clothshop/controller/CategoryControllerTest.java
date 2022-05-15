@@ -1,5 +1,6 @@
 package com.epam.clothshop.controller;
 
+import com.epam.clothshop.dto.CategoryRequest;
 import com.epam.clothshop.entity.Category;
 import com.epam.clothshop.entity.Product;
 import com.epam.clothshop.mapper.CategoryMapper;
@@ -32,6 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 class CategoryControllerTest {
+    private static final int CATEGORY_ID = 3;
+    private static final int PRODUCT_ID = 5;
 
     @MockBean
     CategoryService categoryService;
@@ -47,10 +50,7 @@ class CategoryControllerTest {
 
     @Test
     void getAllCategories() throws Exception {
-        Category category = new Category();
-        category.setId(3);
-        category.setName("books");
-        category.setProducts(new ArrayList<>());
+        Category category = crateCategoryObject();
         List<Category> categories = List.of(category);
 
         Mockito.when(categoryService.getAllCategories()).thenReturn(categories);
@@ -65,52 +65,68 @@ class CategoryControllerTest {
 
     @Test
     void getCategoryById() throws Exception {
-        Category category = new Category();
-        category.setId(3);
-        category.setName("books");
-        category.setProducts(new ArrayList<>());
+        Category category = crateCategoryObject();
 
-        Mockito.when(categoryService.getCategoryById(3)).thenReturn(category);
+        Mockito.when(categoryService.getCategoryById(CATEGORY_ID)).thenReturn(category);
 
         this.mockMvc.perform(get("/categories/3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", Matchers.is("books")));
 
-        verify(categoryService, times(1)).getCategoryById(3);
+        verify(categoryService, times(1)).getCategoryById(CATEGORY_ID);
     }
 
     @Test
     void createCategory() throws Exception {
-        Category category = new Category();
-        category.setName("books");
+        CategoryRequest categoryRequest = crateCategoryRequestObject();
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(category);
+        String json = ow.writeValueAsString(categoryRequest);
 
 
         this.mockMvc.perform(post("/categories")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(categoryService, times(1)).saveCategory(category);
+        verify(categoryService, times(1))
+                .saveCategory(categoryMapper.mapCategoryRequestToCategory(categoryRequest));
     }
 
     @Test
     void getProductsByCategoryId() throws Exception {
-        Product product = new Product();
-        product.setId(5);
-        Category category = new Category();
-        category.setId(3);
-        product.setCategory(category);
+        Product product = createProductObject();
         List<Product> products = List.of(product);
 
-        Mockito.when(categoryService.getProductsByCategoryId(3)).thenReturn(products);
+        Mockito.when(categoryService.getProductsByCategoryId(CATEGORY_ID)).thenReturn(products);
 
         this.mockMvc.perform(get("/categories/3/products"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
-                .andExpect(jsonPath("$[0].id", Matchers.is(5)));
+                .andExpect(jsonPath("$[0].id", Matchers.is(PRODUCT_ID)));
 
-        verify(categoryService, times(1)).getProductsByCategoryId(3);
+        verify(categoryService, times(1)).getProductsByCategoryId(CATEGORY_ID);
+    }
+
+    private Category crateCategoryObject() {
+        var category = new Category();
+        category.setId(CATEGORY_ID);
+        category.setName("books");
+        category.setProducts(new ArrayList<>());
+        return category;
+    }
+
+    private CategoryRequest crateCategoryRequestObject() {
+        var categoryRequest = new CategoryRequest();
+        categoryRequest.setName("books");
+        return categoryRequest;
+    }
+
+    private Product createProductObject() {
+        var product = new Product();
+        product.setId(PRODUCT_ID);
+        Category category = new Category();
+        category.setId(CATEGORY_ID);
+        product.setCategory(category);
+        return product;
     }
 }

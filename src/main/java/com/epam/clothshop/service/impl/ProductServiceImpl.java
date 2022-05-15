@@ -13,8 +13,8 @@ import com.epam.clothshop.service.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-	private ProductRepository productRepository;
-	private CategoryRepository categoryRepository;
+	private final ProductRepository productRepository;
+	private final CategoryRepository categoryRepository;
 	
 	@Autowired
 	public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {

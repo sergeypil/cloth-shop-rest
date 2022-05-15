@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller()
 @RequestMapping("/auth")
 public class AuthController {
-    AuthService authService;
-    UserMapper userMapper;
+    private final AuthService authService;
+    private final UserMapper userMapper;
 
     @Autowired
     public AuthController(AuthService authService, UserMapper userMapper) {
@@ -27,7 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response,
+                                              HttpServletRequest request) {
         UserResponse userResponse= userMapper.mapUserToUserResponce(
                 authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword()));
         return new ResponseEntity<>(userResponse, HttpStatus.OK);

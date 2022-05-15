@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
-    OrderItemMapper orderItemMapper;
+    private final OrderItemMapper orderItemMapper;
 
     @Autowired
     public OrderMapper(OrderItemMapper orderItemMapper) {
@@ -40,7 +41,7 @@ public class OrderMapper {
     public Order mapOrderRequestToOrder(OrderRequest orderRequest, User user) {
         var order = new Order();
         order.setShipDate(orderRequest.getShipDate());
-        order.setCreatedAt(LocalDateTime.now());
+        order.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         order.setStatus(OrderStatus.PLACED);
         order.setCompleted(false);
         order.setUser(user);

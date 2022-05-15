@@ -13,8 +13,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository) {

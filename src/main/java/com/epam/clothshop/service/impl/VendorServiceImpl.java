@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class VendorServiceImpl implements VendorService {
-    private VendorRepository vendorRepository;
+    private final VendorRepository vendorRepository;
 
     @Autowired
     public VendorServiceImpl(VendorRepository vendorRepository) {
